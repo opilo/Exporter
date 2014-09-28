@@ -1,5 +1,6 @@
 {
     "name": "opilo/exporter",
+    "description": "A Library to export eloquent querie result to a spreadsheet file",
     "license": "MIT",
     "authors": [
         {
@@ -8,10 +9,10 @@
         }
     ],
     "require": {
-        "php": ">=5.5.0",
         "illuminate/support": "~4.0",
         "illuminate/database": "~4.0",
-        "phpoffice/phpexcel": "dev-master"
+        "illuminate/config": "~4.0",
+        "phpoffice/phpexcel": "~1.8"
     },
     "autoload": {
         "psr-4": {
