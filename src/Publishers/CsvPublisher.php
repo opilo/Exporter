@@ -6,8 +6,7 @@ class CsvPublisher extends BasePublisher {
 
     public function publish($filename)
     {
-        $this->tmpFile = storage_path() . '/tmp/' . $filename . '.csv'; // TODO: Does folder exists? Has it permission to write?
-        $this->writer->save($this->tmpFile);
+        $this->writer->save($this->getTempFile($filename));
     }
 
     protected function appendToFile($file)
@@ -15,5 +14,10 @@ class CsvPublisher extends BasePublisher {
         $writer = new PhpExcelWriterCsv($this->processor);
         $writer->save($file);
         unset($writer);
+    }
+
+    protected function getExtension()
+    {
+        return '.csv';
     }
 }

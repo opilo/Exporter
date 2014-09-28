@@ -1,5 +1,7 @@
 <?php namespace Opilo\Exporter;
 
+use App;
+
 /**
  * Class ExporterFactory
  *
@@ -52,6 +54,7 @@ class ExporterFactory implements FactoryInterface {
     {
         return new Exporter(
             new \PHPExcel(),
+            App::make('Illuminate\Config\Repository'),
             $fileExtension
         );
     }

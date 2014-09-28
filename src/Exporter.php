@@ -1,7 +1,8 @@
 <?php namespace Opilo\Exporter;
 
+use Illuminate\Config\Repository as Config;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Schema;
+use Schema;
 use Opilo\Exporter\Publishers\PublisherFactory;
 use PHPExcel;
 
@@ -48,18 +49,25 @@ class Exporter implements ExporterInterface {
     protected $table;
 
     /**
-     * @param PHPExcel  $processor
-     * @param string    $fileType
+     * @var Config
+     */
+    protected $config;
+
+    /**
+     * @param PHPExcel                          $processor
+     * @param \Illuminate\Config\Repository     $config
+     * @param string                            $fileType
      */
     public function __construct(
         PHPExcel $processor,
+        Config $config,
         $fileType
     ) {
-
         $this->processor = $processor;
         $this->fileType = $fileType;
 
         $this->bootExporter();
+        $this->config = $config;
     }
 
     /**
@@ -80,7 +88,7 @@ class Exporter implements ExporterInterface {
     protected function bootExporter()
     {
         $this->fileName = md5(uniqid(rand(), true));
-        $this->size = 100; // TODO: Get from config
+        $this->size = $this->config->get('opilo/exporter::chunk_size');
     }
 
     private function prepareExport($headers)
@@ -102,7 +110,12 @@ class Exporter implements ExporterInterface {
 
     protected function ceratePublisher()
     {
-        $this->publisher = PublisherFactory::make($this->processor, $this->fileType, $this->headers);
+        $this->publisher = PublisherFactory::make(
+            $this->processor,
+            $this->fileType,
+            $this->config,
+            $this->headers
+        );
     }
 
     protected function createFile()
@@ -117,4 +130,5 @@ class Exporter implements ExporterInterface {
 
         unset($this->processor);
     }
+
 }
