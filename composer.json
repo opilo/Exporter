@@ -25,5 +25,18 @@
             "dev-master": "0.1-dev"
         }
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://repo.opilo.com/repo/private/"
+        },
+        {
+            "type": "composer",
+            "url": "http://repo.opilo.com/repo/packagist/"
+        },
+        {
+            "packagist": false
+        }
+    ],
     "minimum-stability": "dev"
 }
