@@ -18,7 +18,7 @@ class ExporterServiceProvider extends ServiceProvider {
      */
     public function boot()
 	{
-        $this->package('opilo/eloquent-exporter', 'opilo/exporter');
+        $this->package('opilo/exporter', 'opilo/exporter');
 	}
 
 	/**
@@ -28,11 +28,13 @@ class ExporterServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
+		$this->app['config']->package('opilo/exporter', __DIR__.'/config');
+
 		$this->app->bind('exporter', function($app) {
 			return new ExporterManager(
 				$app['config'],
 				new FileManager(),
-				new Csvizer($app['config']->get('opilo/exporter::csv_delimiter'))
+				new Csvizer($app['config']->get('exporter::csv_delimiter'))
 			);
 		});
 	}
