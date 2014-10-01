@@ -167,7 +167,7 @@ class ExporterManager implements ExporterInterface {
 	/**
      * @param $rows
      */
-    protected function exportChunck($rows)
+    public function exportChunk($rows)
     {
         foreach ($rows as $row) {
             foreach ($row->toArray() as $field => $value) {
@@ -237,7 +237,7 @@ class ExporterManager implements ExporterInterface {
             $tmp[] = $this->buffer[$header];
         }
 
-        $this->lineBuffer[] = $this->csvizer->encode($this->headers);
+        $this->lineBuffer[] = $this->csvizer->encode($tmp);
     }
 
 	/**
