@@ -1,7 +1,14 @@
 <?php namespace Opilo\Exporter; 
 
 use Illuminate\Support\ServiceProvider;
+use Passerines\Wings\FileSystem\FileManager;
+use Passerines\Wings\Utility\Csvizer\Csvizer;
 
+/**
+ * Class ExporterServiceProvider
+ *
+ * @package Opilo\Exporter
+ */
 class ExporterServiceProvider extends ServiceProvider {
 
     /**
@@ -21,7 +28,13 @@ class ExporterServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		// do nothing
+		$this->app->bind('exporter', function($app) {
+			return new ExporterManager(
+				$app['config'],
+				new FileManager(),
+				new Csvizer($app['config']->get('opilo/exporter::csv_delimiter'))
+			);
+		});
 	}
 
 }
