@@ -237,7 +237,7 @@ class ExporterManager implements ExporterInterface {
             $tmp[] = $this->buffer[$header];
         }
 
-        $this->lineBuffer[] = $this->csvizer->encode($this->headers);
+        $this->lineBuffer[] = $this->csvizer->encode($tmp);
     }
 
 	/**
