@@ -1,42 +1,30 @@
 {
-	"name": "opilo/eloquent-exporter",
-	"description": "A Library to export eloquent querie result to a spreadsheet file",
-	"license": "MIT",
-	"version": "0.2.2",
-	"authors": [
-		{
-			"name": "Behzad Shabani",
-			"email": "behzad.shabani@gmail.com"
-		}
-	],
-	"require": {
-		"illuminate/support": "~4.0",
-		"illuminate/database": "~4.0",
-		"illuminate/config": "~4.0",
-		"phpoffice/phpexcel": "1.8.0"
-	},
-	"autoload": {
-		"psr-4": {
-			"Opilo\\Exporter\\": "src"
-		}
-	},
-	"extra": {
-		"branch-alias": {
-			"dev-master": "0.2-dev"
-		}
-	},
-	"repositories": [
+    "name": "opilo/eloquent-exporter",
+    "description": "A Library to export eloquent querie result to a spreadsheet file",
+    "license": "MIT",
+    "version": "1.0.0",
+    "authors": [
         {
-            "type": "composer",
-            "url": "http://repo.opilo.com/repo/private/"
-        },
-        {
-            "type": "composer",
-            "url": "http://repo.opilo.com/repo/packagist/"
-        },
-        {
-            "packagist": false
+            "name": "Behzad Shabani",
+            "email": "behzad.shabani@gmail.com"
         }
     ],
-	"minimum-stability": "dev"
+    "require": {
+        "illuminate/support": "~4.0",
+        "illuminate/database": "~4.0",
+        "illuminate/config": "~4.0",
+        "passerines/csvizer": "0.1.*@dev",
+        "passerines/filesystem": "0.2.*@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Opilo\\Exporter\\": "src"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "minimum-stability": "dev"
 }

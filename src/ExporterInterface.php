@@ -13,9 +13,11 @@ interface ExporterInterface {
      * Export selected or all contacts to a file
      *
      * @param   Builder $query
-     * @param   array   $header
+     * @param   array   $headers
+     * @param   array   $relationHeader
      * @return  mixed
      */
-    public function export(Builder $query, $header = []);
+    public function export(Builder $query, $headers = [], $relationHeader = []);
 
 }
+
