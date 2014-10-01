@@ -167,7 +167,7 @@ class ExporterManager implements ExporterInterface {
 	/**
      * @param $rows
      */
-    protected function exportChunck($rows)
+    protected function exportChunk($rows)
     {
         foreach ($rows as $row) {
             foreach ($row->toArray() as $field => $value) {
