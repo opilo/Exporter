@@ -90,3 +90,13 @@ $query = User::where('status', 1)->with('roles');
 Exporter::export($query, ['username', 'email', 'name'], ['roles' => 'title']);
 ```
 The relation fields will join together by what is set in package config as `relation_glue` *(it is set to `|` by default)*
+
+### Config file
+
+field | description | default value
+---|---|---
+chunk_size | Size of chunk of results to be written in file. | 100
+store_path | Where exported file should be stored. | app/storage/export/
+file_extension | Extension of exported file | .ext
+relation_glue | Character to join relation fields together | \| *(pipeline)*
+csv_delimiter | Character to delimit columns in csv file | ,
