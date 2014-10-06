@@ -1,6 +1,3 @@
-
-
-
 # Eloquent Exporter
 An easy to use tool to export an eloquent query results to CSV format.
 
