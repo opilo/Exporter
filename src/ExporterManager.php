@@ -92,17 +92,84 @@ class ExporterManager implements ExporterInterface {
 	}
 
 	/**
+     * @param   array $headers
+     * @return  ExporterManager
+     */
+    public function headers(Array $headers)
+    {
+        $this->headers = $headers;
+
+        return $this;
+    }
+
+	/**
+     * @param   string  $headerName
+     * @param   string  $alias
+     * @return  ExporterManager
+     */
+    public function headerAlias($headerName, $alias)
+    {
+        $tmp = [];
+        foreach ($this->headers as $header) {
+            if ($header == $headerName) {
+                $tmp[$header] = $alias;
+                continue;
+            }
+
+            $tmp[] = $header;
+        }
+
+        $this->headers = $tmp;
+
+        return $this;
+    }
+
+	/**
+     * @param   string  $relationName
+     * @param   string  $relationColumn
+     * @return  ExporterManager
+     */
+    public function relation($relationName, $relationColumn)
+    {
+        $this->relationHeadersField = array_merge($this->relationHeadersField,[
+            $relationName => $relationColumn
+        ]);
+
+        return $this;
+    }
+
+	/**
+     * @param   string  $relationName
+     * @param   string  $relationAlias
+     * @return  ExporterManager
+     */
+    public function relationAlias($relationName, $relationAlias)
+    {
+        $tmp = [];
+        foreach ($this->relationHeaders as $relationHeader) {
+            if ($relationHeader == $relationName) {
+                $tmp[$relationHeader] = $relationAlias;
+                continue;
+            }
+
+            $tmp[] = $relationHeader;
+        }
+
+        $this->relationHeaders = $tmp;
+
+        return $this;
+    }
+
+	/**
 	 * Export selected or all contacts to a file
 	 *
      * @param   Builder $query
-     * @param   array   $headers
-     * @param   array   $relationHeader
      * @return  mixed
      */
-    public function export(Builder $query, $headers = [], $relationHeader = [])
+    public function export(Builder $query)
 	{
 		$table = $query->getModel()->getTable();
-		$this->prepareExport($headers, $relationHeader, $table);
+		$this->prepareExport($table);
 
         $query->chunk($this->chunk, [$this, 'exportChunk']);
 
@@ -110,29 +177,23 @@ class ExporterManager implements ExporterInterface {
 	}
 
     /**
-     * @param $headers
-     * @param $relation
      * @param $table
      */
-    protected function prepareExport($headers, $relation, $table)
+    protected function prepareExport($table)
 	{
-        $this->setRelationHeaders($relation);
-        $this->setHeaders($headers, $table);
+        $this->setHeaders($table);
 		$this->createFile();
 	}
 
     /**
-     * @param $headers
      * @param $table
      */
-    protected function setHeaders($headers, $table)
+    protected function setHeaders($table)
 	{
-		if (empty($headers)) {
+		if (empty($this->headers)) {
 			$headers = Schema::getColumnListing($table);
-			$headers = array_diff($headers, ['deleted_at', 'created_at', 'updated_at']);
+			$this->headers = array_diff($headers, ['deleted_at', 'created_at', 'updated_at']);
 		}
-
-		$this->headers = $headers;
 	}
 
     /**
@@ -154,27 +215,6 @@ class ExporterManager implements ExporterInterface {
                           md5(uniqid(rand(), true)) .
 						  $this->config->get('eloquent-exporter::file_extension');
 	}
-
-    /**
-     * @param $relations
-     */
-    protected function setRelationHeaders($relations)
-    {
-        foreach ($relations as $name => $data) {
-            if (!isset($data['column'])) {
-                // throw exception
-            }
-
-            $this->relationHeadersField = array_merge(
-                $this->relationHeadersField,
-                [$name => $data['column']]
-            );
-        }
-
-        foreach ($relations as $name => $data) {
-            $this->relationHeaders[] = (isset($data['alias'])) ?: $name;
-        }
-    }
 
 	/**
      * @param $rows
@@ -261,6 +301,9 @@ class ExporterManager implements ExporterInterface {
         $this->lineBuffer = [];
     }
 
+	/**
+     * @return array
+     */
     protected function getHeaders()
     {
         return array_merge($this->headers, $this->relationHeaders);

@@ -13,11 +13,36 @@ interface ExporterInterface {
      * Export selected or all contacts to a file
      *
      * @param   Builder $query
-     * @param   array   $headers
-     * @param   array   $relationHeader
      * @return  mixed
      */
-    public function export(Builder $query, $headers = [], $relationHeader = []);
+    public function export(Builder $query);
+
+    /**
+     * @param   array $headers
+     * @return  ExporterManager
+     */
+    public function headers(Array $headers);
+
+    /**
+     * @param   string  $headerName
+     * @param   string  $alias
+     * @return  ExporterManager
+     */
+    public function headerAlias($headerName, $alias);
+
+    /**
+     * @param   string  $relationName
+     * @param   string  $relationColumn
+     * @return  ExporterManager
+     */
+    public function relation($relationName, $relationColumn);
+
+    /**
+     * @param   string  $relationName
+     * @param   string  $relationAlias
+     * @return  ExporterManager
+     */
+    public function relationAlias($relationName, $relationAlias);
 
 }
 
