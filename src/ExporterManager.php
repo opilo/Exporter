@@ -140,7 +140,7 @@ class ExporterManager implements ExporterInterface {
      */
     protected function createFile()
 	{
-		$headerLine = $this->csvizer->encode($this->headers);
+		$headerLine = $this->csvizer->encode($this->getHeaders());
 
 		$this->file->load($this->fileName)->writeLine($headerLine);
 	}
@@ -156,12 +156,24 @@ class ExporterManager implements ExporterInterface {
 	}
 
     /**
-     * @param $relation
+     * @param $relations
      */
-    protected function setRelationHeaders($relation)
+    protected function setRelationHeaders($relations)
     {
-        $this->relationHeadersField = $relation;
-        $this->relationHeaders = array_keys($relation);
+        foreach ($relations as $name => $data) {
+            if (!isset($data['column'])) {
+                // throw exception
+            }
+
+            $this->relationHeadersField = array_merge(
+                $this->relationHeadersField,
+                [$name => $data['column']]
+            );
+        }
+
+        foreach ($relations as $name => $data) {
+            $this->relationHeaders[] = (isset($data['alias'])) ?: $name;
+        }
     }
 
 	/**
@@ -247,6 +259,11 @@ class ExporterManager implements ExporterInterface {
     {
         $this->buffer = [];
         $this->lineBuffer = [];
+    }
+
+    protected function getHeaders()
+    {
+        return array_merge($this->headers, $this->relationHeaders);
     }
 
 }
