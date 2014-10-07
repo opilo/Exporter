@@ -85,12 +85,12 @@ class ExporterManager implements ExporterInterface {
 	}
 
     /**
-     * Boot exporter
+     * Boot eloquent-exporter
      */
     protected function bootExporter()
 	{
 		$this->generateFileName();
-		$this->chunk = $this->config->get('exporter::chunk_size');
+		$this->chunk = $this->config->get('eloquent-exporter::chunk_size');
 	}
 
 	/**
@@ -150,9 +150,9 @@ class ExporterManager implements ExporterInterface {
      */
     protected function generateFileName()
 	{
-		$this->fileName = $this->config->get('exporter::store_path') .
+		$this->fileName = $this->config->get('eloquent-exporter::store_path') .
                           md5(uniqid(rand(), true)) .
-						  $this->config->get('exporter::file_extension');
+						  $this->config->get('eloquent-exporter::file_extension');
 	}
 
     /**
@@ -211,7 +211,7 @@ class ExporterManager implements ExporterInterface {
     protected function getGlue()
     {
         if (empty($this->relationGlue)) {
-            $this->relationGlue = $this->config->get('exporter::relation_glue');
+            $this->relationGlue = $this->config->get('eloquent-exporter::relation_glue');
         }
 
         return $this->relationGlue;

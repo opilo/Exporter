@@ -23,7 +23,7 @@ Register the service provider within the providers array found in `app/config/ap
 Add an alias within the aliases array found in `app/config/app.php`:
 ```php
 'aliases' => array(
-    'OAuth' => 'Opilo\Exporter\Facades\Exporter',
+    'Exporter' => 'Opilo\Exporter\Facades\Exporter',
 )
 ```
 

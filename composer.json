@@ -2,7 +2,7 @@
     "name": "opilo/eloquent-exporter",
     "description": "A Library to export eloquent querie result to a spreadsheet file",
     "license": "MIT",
-    "version": "1.0.9",
+    "version": "1.0.10",
     "authors": [
         {
             "name": "Behzad Shabani",

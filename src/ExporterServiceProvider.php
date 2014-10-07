@@ -18,7 +18,7 @@ class ExporterServiceProvider extends ServiceProvider {
      */
     public function boot()
 	{
-        $this->package('opilo/exporter', 'opilo/exporter');
+        $this->package('opilo/eloquent-exporter');
 	}
 
 	/**
@@ -28,7 +28,7 @@ class ExporterServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app['config']->package('opilo/exporter', __DIR__.'/config');
+		$this->app['config']->package('opilo/eloquent-exporter', __DIR__.'/config');
 
 		$this->app->bind('exporter', function($app) {
 			return new ExporterManager(
