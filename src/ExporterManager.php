@@ -2,8 +2,6 @@
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Schema;
-use Passerines\Wings\FileSystem\FileManager;
-use Passerines\Wings\Utility\Csvizer\Csvizer;
 use Illuminate\Config\Repository as Config;
 
 /**
@@ -18,12 +16,12 @@ class ExporterManager implements ExporterInterface {
 	protected $config;
 
 	/**
-	 * @var FileManager
+	 * @var FileWriter
 	 */
 	protected $file;
 
 	/**
-	 * @var Csvizer
+	 * @var CsvTool
 	 */
 	protected $csvizer;
 
@@ -69,13 +67,13 @@ class ExporterManager implements ExporterInterface {
 
 	/**
      * @param Config $config
-     * @param FileManager $file
-     * @param Csvizer $csvizer
+     * @param FileWriter $file
+     * @param CsvTool $csvizer
      */
     public function __construct(
 		Config $config,
-		FileManager $file,
-		Csvizer $csvizer
+		FileWriter $file,
+		CsvTool $csvizer
 	) {
 		$this->config = $config;
 		$this->file = $file;
@@ -107,6 +105,8 @@ class ExporterManager implements ExporterInterface {
 		$this->prepareExport($headers, $relationHeader, $table);
 
         $query->chunk($this->chunk, [$this, 'exportChunk']);
+
+        return $this->fileName;
 	}
 
     /**
@@ -140,7 +140,7 @@ class ExporterManager implements ExporterInterface {
      */
     protected function createFile()
 	{
-		$headerLine = $this->csvizer->encode($this->headers);
+		$headerLine = $this->csvizer->encode($this->getHeaders());
 
 		$this->file->load($this->fileName)->writeLine($headerLine);
 	}
@@ -156,12 +156,24 @@ class ExporterManager implements ExporterInterface {
 	}
 
     /**
-     * @param $relation
+     * @param $relations
      */
-    protected function setRelationHeaders($relation)
+    protected function setRelationHeaders($relations)
     {
-        $this->relationHeadersField = $relation;
-        $this->relationHeaders = array_keys($relation);
+        foreach ($relations as $name => $data) {
+            if (!isset($data['column'])) {
+                // throw exception
+            }
+
+            $this->relationHeadersField = array_merge(
+                $this->relationHeadersField,
+                [$name => $data['column']]
+            );
+        }
+
+        foreach ($relations as $name => $data) {
+            $this->relationHeaders[] = (isset($data['alias'])) ?: $name;
+        }
     }
 
 	/**
@@ -247,6 +259,11 @@ class ExporterManager implements ExporterInterface {
     {
         $this->buffer = [];
         $this->lineBuffer = [];
+    }
+
+    protected function getHeaders()
+    {
+        return array_merge($this->headers, $this->relationHeaders);
     }
 
 }
