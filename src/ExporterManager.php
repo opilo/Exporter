@@ -105,6 +105,8 @@ class ExporterManager implements ExporterInterface {
 		$this->prepareExport($headers, $relationHeader, $table);
 
         $query->chunk($this->chunk, [$this, 'exportChunk']);
+
+        return $this->fileName;
 	}
 
     /**
