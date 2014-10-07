@@ -43,21 +43,21 @@ class CsvTool {
     public function encode(Array $data)
     {
         $escaped = [];
-        $item = [];
+        $alias = [];
 
-        foreach ($data as $item) {
-            if (is_array($item)) {
+        foreach ($data as $item => $alias) {
+            if (is_array($alias)) {
                 return false;
             }
 
-            if (strpos($item, $this->delimiter)) {
-                $item = $this->quoteItem($item);
+            if (strpos($alias, $this->delimiter)) {
+                $alias = $this->quoteItem($alias);
             }
 
-            $escaped[] = $item;
+            $escaped[] = $alias;
         }
 
-        return implode($this->delimiter, $item);
+        return implode($this->delimiter, $alias);
     }
 
     /**
