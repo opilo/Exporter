@@ -75,18 +75,39 @@ $query = User::where('status', 1);
 Exporter::export($query, ['username', 'email', 'name']);
 ```
 
+#### Column Aliasing
+You can also set alias for columns you don't want to be printed as your sql table column name. Just set your alias as value of your table.
+```php
+<?php
+// create your queryBuilder
+$query = User::where('status', 1);
+
+Exporter::export($query, ['uname' => 'username', 'email', 'name']);
+```
+
 ### Relational Queries
 When you want to export a joint query you should pass a key value array as third parameter of export method.
-The **key** should be name of relation, and **value** is the column you want to export from related table.
+The **key** should be name of relation, and **value** is a array that specify the column you want to export from related table.
 ```php
 <?php
 
 // create your queryBuilder
 $query = User::where('status', 1)->with('roles');
 
-Exporter::export($query, ['username', 'email', 'name'], ['roles' => 'title']);
+Exporter::export($query, ['username', 'email', 'name'], ['roles' => ['column' => 'title']]);
 ```
 The relation fields will join together by what is set in package config as `relation_glue` *(it is set to `|` by default)*
+
+#### Relation Header Alias
+You can also set alias for your query relation columns, just specify the alias in relation name *value array*.
+```php
+<?php
+
+// create your queryBuilder
+$query = User::where('status', 1)->with('roles');
+
+Exporter::export($query, ['username', 'email', 'name'], ['roles' => ['column' => 'title', 'alias' => 'User Roles']]);
+```
 
 ### Config file
 
