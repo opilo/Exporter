@@ -2,8 +2,6 @@
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Schema;
-use Passerines\Wings\FileSystem\FileManager;
-use Passerines\Wings\Utility\Csvizer\Csvizer;
 use Illuminate\Config\Repository as Config;
 
 /**
@@ -18,12 +16,12 @@ class ExporterManager implements ExporterInterface {
 	protected $config;
 
 	/**
-	 * @var FileManager
+	 * @var FileWriter
 	 */
 	protected $file;
 
 	/**
-	 * @var Csvizer
+	 * @var CsvTool
 	 */
 	protected $csvizer;
 
@@ -69,13 +67,13 @@ class ExporterManager implements ExporterInterface {
 
 	/**
      * @param Config $config
-     * @param FileManager $file
-     * @param Csvizer $csvizer
+     * @param FileWriter $file
+     * @param CsvTool $csvizer
      */
     public function __construct(
 		Config $config,
-		FileManager $file,
-		Csvizer $csvizer
+		FileWriter $file,
+		CsvTool $csvizer
 	) {
 		$this->config = $config;
 		$this->file = $file;
