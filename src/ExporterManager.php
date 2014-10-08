@@ -140,9 +140,10 @@ class ExporterManager implements ExporterInterface {
      */
     protected function createFile()
 	{
+        $utf8Bom = chr(239) . chr(187) . chr(191);
 		$headerLine = $this->csvizer->encode($this->getHeaders());
 
-		$this->file->load($this->fileName)->writeLine($headerLine);
+		$this->file->load($this->fileName)->writeLine($utf8Bom . $headerLine);
 	}
 
     /**
@@ -156,13 +157,14 @@ class ExporterManager implements ExporterInterface {
 	}
 
     /**
-     * @param $relations
+     * @param   $relations
+     * @throws  RelationExportException
      */
     protected function setRelationHeaders($relations)
     {
         foreach ($relations as $name => $data) {
             if (!isset($data['column'])) {
-                // throw exception
+                throw new RelationExportException("Cannot determine which column to export for relation");
             }
 
             $this->relationHeadersField = array_merge(
