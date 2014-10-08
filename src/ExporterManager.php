@@ -140,9 +140,10 @@ class ExporterManager implements ExporterInterface {
      */
     protected function createFile()
 	{
+        $utf8Bom = chr(239) . chr(187) . chr(191);
 		$headerLine = $this->csvizer->encode($this->getHeaders());
 
-		$this->file->load($this->fileName)->writeLine($headerLine);
+		$this->file->load($this->fileName)->writeLine($utf8Bom . $headerLine);
 	}
 
     /**
