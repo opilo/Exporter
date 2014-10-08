@@ -156,13 +156,14 @@ class ExporterManager implements ExporterInterface {
 	}
 
     /**
-     * @param $relations
+     * @param   $relations
+     * @throws  RelationExportException
      */
     protected function setRelationHeaders($relations)
     {
         foreach ($relations as $name => $data) {
             if (!isset($data['column'])) {
-                // throw exception
+                throw new RelationExportException("Cannot determine which column to export for relation");
             }
 
             $this->relationHeadersField = array_merge(
