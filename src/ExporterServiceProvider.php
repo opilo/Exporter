@@ -1,8 +1,6 @@
 <?php namespace Opilo\Exporter; 
 
 use Illuminate\Support\ServiceProvider;
-use Passerines\Wings\FileSystem\FileManager;
-use Passerines\Wings\Utility\Csvizer\Csvizer;
 
 /**
  * Class ExporterServiceProvider
