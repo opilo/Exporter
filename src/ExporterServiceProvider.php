@@ -33,8 +33,8 @@ class ExporterServiceProvider extends ServiceProvider {
 		$this->app->bind('exporter', function($app) {
 			return new ExporterManager(
 				$app['config'],
-				new FileManager(),
-				new Csvizer($app['config']->get('exporter::csv_delimiter'))
+				new FileWriter(),
+				new CsvTool($app['config']->get('exporter::csv_delimiter'))
 			);
 		});
 	}
