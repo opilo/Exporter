@@ -1,6 +1,8 @@
 <?php namespace Opilo\Exporter; 
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Config\Repository as Config;
 
@@ -179,10 +181,11 @@ class ExporterManager implements ExporterInterface {
     }
 
 	/**
-     * @param $rows
+     * @param Collection $rows
      */
     public function exportChunk($rows)
     {
+        /** @var Model $row */
         foreach ($rows as $row) {
             foreach ($row->toArray() as $field => $value) {
                 if (!in_array($field, $this->headers) && !in_array($field, $this->relationHeaders)) {
@@ -248,7 +251,9 @@ class ExporterManager implements ExporterInterface {
         $tmp = [];
 
         foreach ($this->headers as $header) {
-            $tmp[] = $this->buffer[$header];
+            if (!empty($this->buffer[$header])) {
+                $tmp[] = $this->buffer[$header];
+            }
         }
 
         $this->lineBuffer[] = $this->csvizer->encode($tmp);
